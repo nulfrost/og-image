@@ -1,21 +1,25 @@
-
-import { readFileSync } from 'fs';
-import marked from 'marked';
-import { sanitizeHtml } from './sanitizer';
-import { ParsedRequest } from './types';
-const twemoji = require('twemoji');
-const twOptions = { folder: 'svg', ext: '.svg' };
+import { readFileSync } from "fs";
+import marked from "marked";
+import { sanitizeHtml } from "./sanitizer";
+import { ParsedRequest } from "./types";
+const twemoji = require("twemoji");
+const twOptions = { folder: "svg", ext: ".svg" };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
 
-const rglr = readFileSync(`${__dirname}/../_fonts/Inter-Regular.woff2`).toString('base64');
-const bold = readFileSync(`${__dirname}/../_fonts/Inter-Bold.woff2`).toString('base64');
-const mono = readFileSync(`${__dirname}/../_fonts/Vera-Mono.woff2`).toString('base64');
+const rglr = readFileSync(
+  `${__dirname}/../_fonts/Inter-Regular.woff2`
+).toString("base64");
+const bold = readFileSync(`${__dirname}/../_fonts/Inter-Bold.woff2`).toString(
+  "base64"
+);
+const mono = readFileSync(`${__dirname}/../_fonts/Vera-Mono.woff2`).toString(
+  "base64"
+);
 
 function getCss(fontSize: string) {
-   
-    let background = "#faf9f6";
+  let background = "#242323";
 
-    return `
+  return `
     @font-face {
         font-family: 'Inter';
         font-style:  normal;
@@ -40,6 +44,7 @@ function getCss(fontSize: string) {
     body {
         background: ${background};
         background-size: 100px 100px;
+        color: #DADAD2;
         height: 100vh;
         display: flex;
         align-items: center;
@@ -77,8 +82,8 @@ function getCss(fontSize: string) {
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-    const { text,  md, fontSize } = parsedReq;
-    return `<!DOCTYPE html>
+  const { text, md, fontSize } = parsedReq;
+  return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
@@ -91,11 +96,10 @@ export function getHtml(parsedReq: ParsedRequest) {
             <div class="spacer">
             <div class="spacer">
             <div class="heading">${emojify(
-                md ? marked(text) : sanitizeHtml(text)
+              md ? marked(text) : sanitizeHtml(text)
             )}
             </div>
         </div>
     </body>
 </html>`;
 }
-
